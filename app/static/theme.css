@@ -6,7 +6,7 @@
   color-scheme:light; }
 * {box-sizing:border-box} [hidden] {display:none!important}
 body.tiles {margin:0;background:var(--bg);color:var(--ink);font:var(--size)/1.55 var(--font-ui)}
-.tiles .desk {display:grid;grid-template-areas:"mast mast mast" "stages stages stages" "source kpis kpis" "chart chart inspection" "chart chart results" "archive archive archive" "statusbar statusbar statusbar";grid-template-columns:.85fr .8fr 1.3fr;gap:var(--gap);margin:auto;padding:clamp(14px,3vw,42px);max-width:1650px}
+.tiles .desk {display:grid;grid-template-areas:"mast mast mast" "stages stages stages" "source kpis kpis" "chart chart inspection" "chart chart results" "archive archive archive" "settlement settlement settlement" "statusbar statusbar statusbar";grid-template-columns:.85fr .8fr 1.3fr;gap:var(--gap);margin:auto;padding:clamp(14px,3vw,42px);max-width:1650px}
 .tiles .mast {grid-area:mast;background:var(--surface);padding:var(--pad);min-width:0}
 .tiles .mast h1 {font:700 clamp(26px,4vw,66px)/1.1 var(--font-display);margin:0;overflow-wrap:anywhere}
 .tiles .role {color:var(--accent);margin:0 0 11px;font-weight:700}
@@ -53,3 +53,18 @@ body.tiles {margin:0;background:var(--bg);color:var(--ink);font:var(--size)/1.55
 .coverage-filled {background:var(--accent)}
 .coverage-hole {background:var(--surface)}
 .coverage-legend {padding-top:8px}
+
+.tiles .settlement {grid-area:settlement;border:2px solid var(--accent)}
+.tiles .settle-controls {display:flex;flex-wrap:wrap;gap:var(--gap);align-items:center;margin-bottom:10px}
+.tiles .settle-status {margin:6px 0;font-weight:700}
+.tiles .settle-status[data-failure="true"] {color:var(--alert)}
+.tiles .settle-kpis {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--gap);margin-bottom:10px}
+.tiles .settle-kpis .metric {padding:10px var(--pad)}
+.tiles .settle-kpis strong {font:600 clamp(18px,3vw,34px)/1.05 var(--font-num);font-variant-numeric:tabular-nums}
+.tiles #settle-rows td.cell-tag {font-family:var(--font-num)}
+.tiles .bucket-PAID {color:var(--accent);font-weight:700}
+.tiles .bucket-PAYABLE {color:var(--ink)}
+.tiles .bucket-DISPUTED {color:var(--alert);font-weight:700}
+.tiles #settle-detail {margin:10px 0 0;max-height:200px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:.88em/1.5 var(--font-num)}
+@media(max-width:1120px) { .tiles .desk {grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"mast mast" "source source" "stages stages" "kpis kpis" "results results" "chart inspection" "archive archive" "settlement settlement" "statusbar statusbar"} }
+@media(max-width:630px) { .tiles .desk {grid-template-columns:minmax(0,1fr);grid-template-areas:"mast" "source" "stages" "kpis" "chart" "results" "inspection" "archive" "settlement" "statusbar"} .tiles .desk .settle-kpis {grid-template-columns:repeat(2,minmax(0,1fr))} }

@@ -8,21 +8,28 @@ from app.business import DomainIssue
 from app.config import MAX_FILE, ROOT
 from app.http_errors import response
 from app.review.store import Store
+from app.settlement.api import settlement_api
+from app.settlement.store import SettlementStore
 from app.spec import PROJECT
 
 
-def create_app(database=None):
+def create_app(database=None, settlement_db=None):
     app = Flask(__name__)
     app.config["MAX_CONTENT_LENGTH"] = MAX_FILE + 16 * 1024
     app.extensions["runs"] = Store(
         database
         or os.getenv("WORKBENCH_DB", str(ROOT / "instance" / "workbench.sqlite3"))
     )
+    app.extensions["settlements"] = SettlementStore(
+        settlement_db
+        or os.getenv("SETTLEMENT_DB", str(ROOT / "instance" / "settlement.sqlite3"))
+    )
     app.register_error_handler(DomainIssue, response)
     app.register_error_handler(
         RequestEntityTooLarge, lambda _: response(DomainIssue("FILE_TOO_LARGE"))
     )
     app.register_blueprint(api)
+    app.register_blueprint(settlement_api)
 
     @app.get("/")
     def home():

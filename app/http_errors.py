@@ -17,6 +17,20 @@ LABELS = {
     "UNRESOLVED_ISSUES": "存在待处理差异",
     "SAMPLE_UNKNOWN": "样例不存在",
     "STAGE_UNKNOWN": "处理阶段不存在",
+    "SETTLEMENT_PAYLOAD": "结算请求字段不完整",
+    "BAD_REGION": "验收区域坐标无效",
+    "REGION_TOO_LARGE": "验收区域超过可结算像元上限",
+    "BAD_TILE": "瓦片字段无效",
+    "TILE_ID_DUPLICATE": "瓦片编号重复",
+    "GRADE_INVALID": "验收等级必须是非负整数",
+    "TILE_OUT_OF_REGION": "瓦片越出验收区域",
+    "PAID_LEDGER_INVALID": "已付款账与当前区域或供应商不符",
+    "PARTITION_BROKEN": "已付、可付、争议范围无法守恒，关账被拒绝",
+    "LEDGER_NOT_FOUND": "结算账不存在",
+    "STALE_SETTLEMENT": "结算结果已过期，请按最新付款账重算",
+    "LEDGER_FINALIZED": "结算账已关账，请先重开再受理新证据",
+    "LEDGER_NOT_CLOSED": "结算账尚未关账，不能受理迟到瓦片",
+    "REGION_MOVED": "迟到证据不允许更换验收区域",
 }
 
 
@@ -24,10 +38,18 @@ def response(error):
     code = error.code
     status = (
         404
-        if code in {"RUN_NOT_FOUND", "SAMPLE_UNKNOWN", "STAGE_UNKNOWN"}
+        if code in {"RUN_NOT_FOUND", "SAMPLE_UNKNOWN", "STAGE_UNKNOWN", "LEDGER_NOT_FOUND"}
         else (
             409
-            if code in {"STALE_REVIEW", "RUN_FINALIZED", "UNRESOLVED_ISSUES"}
+            if code
+            in {
+                "STALE_REVIEW",
+                "RUN_FINALIZED",
+                "UNRESOLVED_ISSUES",
+                "STALE_SETTLEMENT",
+                "LEDGER_FINALIZED",
+                "LEDGER_NOT_CLOSED",
+            }
             else 413 if code == "FILE_TOO_LARGE" else 422
         )
     )

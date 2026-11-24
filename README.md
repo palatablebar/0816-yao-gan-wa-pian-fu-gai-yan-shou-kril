@@ -18,4 +18,8 @@ docker compose up --build -d --wait
 docker compose exec -T app pytest -q
 ```
 
+## 像元结算账
+
+工作台底部「像元结算账」面板处理供应商瓦片重叠：同一像元只付一次，未付款时优先采信验收等级高的瓦片，同级跨供应商争议像元挂起；迟到瓦片只重算未付款像元，已付款保留原领款人。关账采用 revision 乐观锁，两人同时提交时过期结果退回重算。已付、可付、争议三桶互不重叠且并集等于有效覆盖，否则拒绝关账。接口与裁决细节见 [阶段接口](docs/HTTP.md) 与 [规则与测试](docs/DEPTH.md)。
+
 [输入字段](docs/DATA-DICTIONARY.md) · [阶段接口](docs/HTTP.md) · [操作步骤](docs/OPERATIONS.md) · [规则与测试](docs/DEPTH.md)

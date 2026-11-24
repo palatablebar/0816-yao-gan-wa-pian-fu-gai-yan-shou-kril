@@ -1,0 +1,51 @@
+{
+  "scenarios": [
+    {
+      "key": "grade",
+      "title": "等级优先，无争议全量照结",
+      "region": {"x0": 0, "y0": 0, "x1": 4, "y1": 3},
+      "tiles": [
+        {"id": "A1", "supplier": "甲供应商", "grade": 2, "x0": 0, "y0": 0, "x1": 3, "y1": 3},
+        {"id": "B1", "supplier": "乙供应商", "grade": 3, "x0": 2, "y0": 0, "x1": 4, "y1": 3}
+      ],
+      "expect": {"paid": 0, "payable": 12, "disputed": 0, "gap": 0}
+    },
+    {
+      "key": "dispute",
+      "title": "同级跨供应商争议像元挂起",
+      "region": {"x0": 0, "y0": 0, "x1": 4, "y1": 2},
+      "tiles": [
+        {"id": "A1", "supplier": "甲供应商", "grade": 3, "x0": 0, "y0": 0, "x1": 3, "y1": 2},
+        {"id": "B1", "supplier": "乙供应商", "grade": 3, "x0": 2, "y0": 0, "x1": 4, "y1": 2}
+      ],
+      "expect": {"paid": 0, "payable": 6, "disputed": 2, "gap": 0}
+    },
+    {
+      "key": "late",
+      "title": "迟到高等级瓦片：已付保留原领款人，未付照新证据",
+      "region": {"x0": 0, "y0": 0, "x1": 4, "y1": 2},
+      "tiles": [
+        {"id": "A1", "supplier": "甲供应商", "grade": 2, "x0": 0, "y0": 0, "x1": 3, "y1": 2},
+        {"id": "B1", "supplier": "乙供应商", "grade": 2, "x0": 2, "y0": 0, "x1": 4, "y1": 2}
+      ],
+      "late_tiles": [
+        {"id": "A1", "supplier": "甲供应商", "grade": 2, "x0": 0, "y0": 0, "x1": 3, "y1": 2},
+        {"id": "B1", "supplier": "乙供应商", "grade": 2, "x0": 2, "y0": 0, "x1": 4, "y1": 2},
+        {"id": "C1", "supplier": "丙供应商", "grade": 4, "x0": 2, "y0": 0, "x1": 4, "y1": 2}
+      ],
+      "expect": {
+        "first": {"paid": 0, "payable": 6, "disputed": 2, "gap": 0},
+        "after_late": {"paid": 6, "payable": 2, "disputed": 0, "gap": 0}
+      }
+    },
+    {
+      "key": "gap",
+      "title": "区域存在覆盖缺口：缺口不结算，账仍可关",
+      "region": {"x0": 0, "y0": 0, "x1": 4, "y1": 2},
+      "tiles": [
+        {"id": "A1", "supplier": "甲供应商", "grade": 2, "x0": 0, "y0": 0, "x1": 3, "y1": 2}
+      ],
+      "expect": {"paid": 0, "payable": 6, "disputed": 0, "gap": 2}
+    }
+  ]
+}

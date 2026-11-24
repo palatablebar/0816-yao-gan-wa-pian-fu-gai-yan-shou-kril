@@ -1,6 +1,7 @@
 import {request} from './client.js';
 import {snapshot, history} from './view.js';
 import {visualize} from './plots.js';
+import {initSettlement} from './settlement.js';
 
 const form = document.querySelector('#source');
 const file = document.querySelector('#file');
@@ -104,3 +105,7 @@ detail.addEventListener('submit',event=>{
   });
 });
 preview(stage);
+initSettlement().catch((error) => {
+  document.querySelector('#settle-status').textContent = error.message;
+  document.querySelector('#settle-status').dataset.failure = 'true';
+});

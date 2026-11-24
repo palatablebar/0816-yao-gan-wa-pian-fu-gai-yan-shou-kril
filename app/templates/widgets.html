@@ -45,3 +45,27 @@
 {% macro status() %}
 <footer class="statusbar"><span id="notice" role="status" aria-live="polite">正在读取样例</span><a href="/examples/clean">下载样例 CSV</a></footer>
 {% endmacro %}
+{% macro settlement() %}
+<section class="panel settlement" aria-labelledby="settlement-title">
+  <div class="panel-head">
+    <h2 id="settlement-title">像元结算账</h2>
+    <span id="settle-counts"></span>
+  </div>
+  <div class="settle-controls">
+    <label>演示场景 <select id="settle-scenario"></select></label>
+    <button type="button" id="settle-open">建账试算</button>
+    <button type="button" id="settle-close">提交关账</button>
+    <button type="button" id="settle-late" hidden>受理迟到瓦片并重算</button>
+  </div>
+  <p id="settle-status" class="settle-status" role="status" aria-live="polite"></p>
+  <div class="settle-kpis" aria-label="结算范围">
+    <div class="metric"><span>已付</span><strong data-settle="paid">—</strong></div>
+    <div class="metric"><span>可付</span><strong data-settle="payable">—</strong></div>
+    <div class="metric"><span>争议挂起</span><strong data-settle="disputed">—</strong></div>
+    <div class="metric"><span>有效覆盖</span><strong data-settle="coverage">—</strong></div>
+    <div class="metric"><span>覆盖缺口</span><strong data-settle="gap">—</strong></div>
+  </div>
+  <div class="scroll"><table id="settle-rows" aria-label="像元结算明细"></table></div>
+  <pre id="settle-detail"></pre>
+</section>
+{% endmacro %}

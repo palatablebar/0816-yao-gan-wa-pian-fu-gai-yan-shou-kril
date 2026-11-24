@@ -13,6 +13,16 @@
 | M5 运行对账 | 对照输入、采信和隔离行 | `POST /api/stages/balance` | `app/modules/reconcile.py` | `tests/test_reconcile.py` |
 | M6 批次复核 | 执行批次并签发或暂缓 | `POST /api/runs、PATCH /api/runs/<id>` | `app/review/service.py` | `tests/test_review.py` |
 | M7 证据交付 | 下载复核清单 | `GET /api/runs/<id>/evidence` | `app/evidence/render.py` | `tests/test_evidence.py` |
+| M8 像元结算 | 供应商重叠像元结算与关账 | `POST /api/settlement/ledgers/<id>/close` | `app/settlement/engine.py` | `tests/test_settlement_engine.py` |
+| M9 结算并发 | 乐观关账与迟到重算 | `POST /api/settlement/ledgers/<id>/late` | `app/settlement/store.py` | `tests/test_settlement_concurrency.py` |
+
+## 像元结算规则
+
+- 同一像元只结算一次，分入已付、可付、争议三个互不重叠的桶，并集等于有效覆盖。
+- 未付款像元优先采信验收等级最高的瓦片；同级且跨供应商持有的像元挂起争议。
+- 迟到瓦片等级再高也不改写已付款归属，只对未付款像元按新证据重算。
+- 关账带 `revision` 乐观锁；两人同时提交时过期一方收到 `STALE_SETTLEMENT`，退回重算。
+- 区域内无瓦片覆盖且从未付款的像元计为覆盖缺口，不进入结算桶。
 
 ## 输入陷阱
 
